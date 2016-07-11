@@ -31,6 +31,7 @@ class Server
     private $stack_call = [];
     private $cache_dir = '';
     private $cache_time_life = 0;
+    const SECONS_IN_MINUT = 60;
 
     /**
      * @param int $language
@@ -52,7 +53,7 @@ class Server
         $this->pass = $pass;
         $this->cache_time_life = $cache_time_life;
         if ($this->cache_time_life) {
-            $this->cache_dir = self::CACHE_DIR . '/' . date('Y-m-d') . '/' . (int)(((date("G") * 60) + (int)date("i")) / $this->cache_time_life);
+            $this->cache_dir = self::CACHE_DIR . '/' . date('Y-m-d') . '/' . (int)(((date("G") * self::SECONS_IN_MINUT) + (int)date("i")) / $this->cache_time_life);
             if (!file_exists($this->cache_dir)) {
                 mkdir($this->cache_dir);
             }
@@ -92,7 +93,8 @@ class Server
         if ($this->cache_time_life && file_exists($this->cache_dir . '/' . $cache_file)) {
             $output = json_decode(file_get_contents($this->cache_dir . '/' . $cache_file), true);
         } else {
-            eval($this->call(rawurlencode($string)));
+            $datas = $this->call(rawurlencode($string));
+            eval($datas);
             $output = [];
             foreach ($GLOBALS as $key => $var) {
                 if (!in_array($key, $server_gobals)) {

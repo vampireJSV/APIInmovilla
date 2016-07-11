@@ -12,6 +12,7 @@ namespace Creativados\Inmovilla;
 class PropertyFeatures
 {
     private $conexion;
+    const NUM_ELEMENTS = 9999;
 
     /**
      * Type constructor.
@@ -23,7 +24,7 @@ class PropertyFeatures
 
     private function gesList($function, $keyfield, $valuefield)
     {
-        $output = $this->conexion->process($function, 1, 9999)[$function];
+        $output = $this->conexion->process($function, 1, self::NUM_ELEMENTS)[$function];
         if ($output[0]['total'] > $output[0]['elementos']) {
             $output = $this->conexion->process($function, 1, $output[0]['total'])[$function];
         }
