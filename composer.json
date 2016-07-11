@@ -1,0 +1,21 @@
+{
+  "name": "creativados/inmovilla",
+  "description": "Inmovilla API library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Josevi Canet",
+      "email": "josevi@creatrivados.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4"
+  },
+  "require-dev": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Creativados\\Inmovilla\\": "Creativados/Inmovilla"
+    }
+  }
+}
