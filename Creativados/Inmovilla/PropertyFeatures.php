@@ -9,33 +9,8 @@
 namespace Creativados\Inmovilla;
 
 
-class PropertyFeatures
+class PropertyFeatures extends PropertyCall
 {
-    private $conexion;
-    const NUM_ELEMENTS = 9999;
-
-    /**
-     * Type constructor.
-     */
-    public function __construct(Server $conexion)
-    {
-        $this->conexion = $conexion;
-    }
-
-    private function gesList($function, $keyfield, $valuefield)
-    {
-        $output = $this->conexion->process($function, 1, self::NUM_ELEMENTS)[$function];
-        if ($output[0]['total'] > $output[0]['elementos']) {
-            $output = $this->conexion->process($function, 1, $output[0]['total'])[$function];
-        }
-        array_shift($output);
-        $temp = [];
-        foreach ($output as $value) {
-            $temp[$value[$keyfield]] = $value[$valuefield];
-        }
-        asort($temp);
-        return $temp;
-    }
 
     public function getTypes()
     {
