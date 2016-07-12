@@ -8,6 +8,8 @@
 
 namespace Creativados\Inmovilla;
 
+use Analog\Analog;
+use Analog\Handler\ChromeLogger;
 
 class Server
 {
@@ -15,6 +17,7 @@ class Server
     const URL = "http://84.246.212.9/apiweb/servidor.php";
     const USER_AGENT = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3";
     const MAGIC_STRING = 'lostipos';
+    const SECONDS_IN_MINUTE = 60;
     const HEADERS = [
         "Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5",
         "Cache-Control: max-age=0",
@@ -31,7 +34,7 @@ class Server
     private $stack_call = [];
     private $cache_dir = '';
     private $cache_time_life = 0;
-    const SECONS_IN_MINUT = 60;
+
 
     /**
      * @param int $language
@@ -49,11 +52,13 @@ class Server
      */
     public function __construct($agency, $pass, $cache_time_life = 60)
     {
+        Analog::handler(ChromeLogger::init());
+
         $this->agency = $agency;
         $this->pass = $pass;
         $this->cache_time_life = $cache_time_life;
         if ($this->cache_time_life) {
-            $this->cache_dir = self::CACHE_DIR . '/' . date('Y-m-d') . '/' . (int)(((date("G") * self::SECONS_IN_MINUT) + (int)date("i")) / $this->cache_time_life);
+            $this->cache_dir = self::CACHE_DIR . '/' . date('Y-m-d') . '/' . (int)(((date("G") * self::SECONDS_IN_MINUTE) + (int)date("i")) / $this->cache_time_life);
             if (!file_exists($this->cache_dir)) {
                 mkdir($this->cache_dir);
             }
@@ -89,9 +94,10 @@ class Server
             implode(";", $this->stack_call)
         ]);
         $cache_file = md5($string) . '.json';
-
+        Analog::info($string);
         if ($this->cache_time_life && file_exists($this->cache_dir . '/' . $cache_file)) {
             $output = json_decode(file_get_contents($this->cache_dir . '/' . $cache_file), true);
+            Analog::warning('Load cache');
         } else {
             $datas = $this->call(rawurlencode($string));
             eval($datas);
@@ -108,7 +114,7 @@ class Server
         }
 
         $this->reset_stack_call();
-
+        Analog::debug($output);
         return $output;
     }
 

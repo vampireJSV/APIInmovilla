@@ -25,6 +25,7 @@ abstract class PropertyCall
 
     public function gesList($function, $keyField, $valueField, $where = '')
     {
+        $temp = [];
         foreach ($this->getData($function) as $value) {
             $temp[$value[$keyField]] = trim($value[$valueField]);
         }
@@ -37,9 +38,12 @@ abstract class PropertyCall
         $meta_info = ['posicion' => 1, 'total' => 0, 'elementos' => 0];
         $temp = [];
         do {
-            $output = $this->connexion->process($function, $meta_info['posicion'] + $meta_info['elementos'], self::NUM_ELEMENTS, $where)[$function];
-            $meta_info = array_shift($output);
-            $temp = array_merge($temp, $output);
+            $output = $this->connexion->process($function, $meta_info['posicion'] + $meta_info['elementos'], self::NUM_ELEMENTS, $where);
+            if (isset($output[$function])) {
+                $output = $output[$function];
+                $meta_info = array_shift($output);
+                $temp = array_merge($temp, $output);
+            }
         } while (($meta_info['posicion'] + $meta_info['elementos'] - 1) < $meta_info['total']);
         return $temp;
     }
