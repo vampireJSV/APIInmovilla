@@ -27,13 +27,27 @@ class Server
         "Accept-Language: en-us,en;q=0.5",
         "Pragma: "
     ];
+    const LANGUAGE_SPAIN = 1;
+    const LANGUAGE_ENGLISH = 2;
+    const LANGUAGE_GERMAN = 3;
+    const LANGUAGE_FRENCH = 4;
+    const LANGUAGE_DUTCH = 5;
+    const LANGUAGE_NORWEGIAN = 6;
+    const LANGUAGE_RUSSIAN = 7;
+    const LANGUAGE_PORTUGUESE = 8;
+    const LANGUAGE_SWEDISH = 10;
+    const LANGUAGE_FINNISH = 11;
+    const LANGUAGE_CHINESE = 12;
+    const LANGUAGE_CATALAN = 13;
+    const LANGUAGE_ITALIAN = 14;
     private $cookie = null;
     private $agency = 0;
     private $pass = "";
-    private $language = 1;
+    private $language = self::LANGUAGE_SPAIN;
     private $stack_call = [];
     private $cache_dir = '';
     private $cache_time_life = 0;
+    private $calls_count = 0;
 
 
     /**
@@ -85,6 +99,7 @@ class Server
     {
         $server_gobals = array_keys($GLOBALS);
         $cache = null;
+        $output = [];
 
         $string = implode(";", [
             $this->agency,
@@ -93,28 +108,32 @@ class Server
             self::MAGIC_STRING,
             implode(";", $this->stack_call)
         ]);
-        $cache_file = md5($string) . '.json';
-        Analog::info($string);
-        if ($this->cache_time_life && file_exists($this->cache_dir . '/' . $cache_file)) {
-            $output = json_decode(file_get_contents($this->cache_dir . '/' . $cache_file), true);
-            Analog::warning('Load cache');
-        } else {
-            $datas = $this->call(rawurlencode($string));
-            eval($datas);
-            $output = [];
-            foreach ($GLOBALS as $key => $var) {
-                if (!in_array($key, $server_gobals)) {
-                    $output[$key] = $GLOBALS[$key];
-                    unset($GLOBALS[$key]);
+        if (count($this->stack_call)) {
+            $cache_file = md5($string) . '.json';
+            Analog::info($string);
+
+            if ($this->cache_time_life && file_exists($this->cache_dir . '/' . $cache_file)) {
+                $output = json_decode(file_get_contents($this->cache_dir . '/' . $cache_file), true);
+                Analog::warning('Load cache');
+            } else {
+                $datas = $this->call(rawurlencode($string));
+                Analog::warning('Call number ' . $this->calls_count);
+                eval($datas);
+                foreach ($GLOBALS as $key => $var) {
+                    if (!in_array($key, $server_gobals)) {
+                        $output[$key] = $GLOBALS[$key];
+                        unset($GLOBALS[$key]);
+                    }
+                }
+                if ($this->cache_time_life) {
+                    file_put_contents($this->cache_dir . '/' . $cache_file, json_encode($output));
                 }
             }
-            if ($this->cache_time_life) {
-                file_put_contents($this->cache_dir . '/' . $cache_file, json_encode($output));
-            }
+
+            $this->reset_stack_call();
+            Analog::debug($output);
         }
 
-        $this->reset_stack_call();
-        Analog::debug($output);
         return $output;
     }
 
@@ -135,6 +154,7 @@ class Server
         curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_USERAGENT, self::USER_AGENT);
+        $this->calls_count++;
         return curl_exec($ch);
     }
 
