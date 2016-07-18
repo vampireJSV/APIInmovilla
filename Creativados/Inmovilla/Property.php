@@ -57,6 +57,9 @@ class Property extends PropertyCall
         $this->set_values($values);
     }
 
+    /**
+     * @param $id
+     */
     public function setCod($id)
     {
         $this->reset();
@@ -70,6 +73,9 @@ class Property extends PropertyCall
         }
     }
 
+    /**
+     * @return array
+     */
     public function environment()
     {
         $environment = [];
@@ -79,6 +85,9 @@ class Property extends PropertyCall
         return $environment;
     }
 
+    /**
+     * @return array
+     */
     public function environmentText()
     {
         $temp = [];
@@ -90,12 +99,19 @@ class Property extends PropertyCall
         return $temp;
     }
 
+    /**
+     * @param $id
+     * @return bool
+     */
     public function find($id)
     {
         $this->setCod($id);
         return $this->get();
     }
 
+    /**
+     * @return bool
+     */
     public function get()
     {
         $output = [];
@@ -136,7 +152,11 @@ class Property extends PropertyCall
         }
     }
 
-
+    /**
+     * @param $method
+     * @param $params
+     * @return mixed
+     */
     public function __call($method, $params)
     {
         if (in_array($method, array_keys(self::BEAUTIFIERS))) {
@@ -144,6 +164,10 @@ class Property extends PropertyCall
         }
     }
 
+    /**
+     * @param $operation
+     * @return string
+     */
     private function beautifier($operation)
     {
         return self::BEAUTIFIERS_VALUES[$operation][$this->{self::BEAUTIFIERS[$operation]}];
