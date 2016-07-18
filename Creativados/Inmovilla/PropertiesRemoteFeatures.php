@@ -9,7 +9,7 @@
 namespace Creativados\Inmovilla;
 
 
-class PropertiesRemoteFeatures extends PropertyCall
+class PropertiesRemoteFeatures extends PropertyCallIterator
 {
     public function getTypes()
     {

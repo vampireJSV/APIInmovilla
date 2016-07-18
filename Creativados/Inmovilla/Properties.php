@@ -9,7 +9,7 @@
 namespace Creativados\Inmovilla;
 
 
-class Properties extends PropertyCall
+class Properties extends PropertyCallIterator
 {
     const WHERE_FIELDS = [
         "cod_ofer" => 1,
@@ -142,37 +142,10 @@ class Properties extends PropertyCall
         $output = [];
         foreach ($this->getData($function, implode(" " . $merge . " ", $where_string), $offset,
             $num_elements) as $value) {
-            $output[] = new Property($value);
+            $output[] = new Property($this->connexion, $value);
         }
 
         $this->var = $output;
         return $this;
     }
-
-    public function getProperty($id)
-    {
-        $output = [];
-        $data = $this->connexion->process("ficha", 1, 1, "cod_ofer=" . $id);
-        if (isset($data['ficha'])) {
-            $output = $data['ficha'][1];
-            if (count($data['fotos'])) {
-                $output['fotos'] = $data['fotos'][$id];
-            } else {
-                $output['fotos'] = [];
-            }
-            if (count($data['descripciones'])) {
-                $output['descripciones'] = $data['descripciones'][$id];
-            } else {
-                $output['descripciones'] = [];
-            }
-            if (count($data['videos'])) {
-                $output['videos'] = $data['videos'][$id];
-            } else {
-                $output['videos'] = [];
-            }
-        }
-        $this->var = [new Property($output)];
-        return $this;
-    }
-
 }

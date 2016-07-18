@@ -16,6 +16,7 @@ $server = new Inmovilla\Server(3783, "09823_jlkHG_Mar", 0); //Marblau
 $features = new Inmovilla\PropertiesRemoteFeatures($server);
 $geo = new Inmovilla\PropertiesRemoteGeoValues($server);
 $properties = new Inmovilla\Properties($server);
+$property = new Inmovilla\Property($server, []);
 
 
 //var_dump($features->getTypes()->current());
@@ -39,9 +40,7 @@ $properties = new Inmovilla\Properties($server);
 //$properties->addWhere("key_loca", 709399);
 //$properties->addWhere("m_uties", 90);
 //$properties->searchImportantProperties();
-//var_dump($properties->getProperty(3954392)->current());
-//var_dump($properties->getProperty(3907332)->current());
-var_dump($properties->getProperty(3917958)->current());
+var_dump();
 var_dump($properties->getProperty(3917958)->current()->enviroment());
 //var_dump($properties->getProperty(232323)->current());
 

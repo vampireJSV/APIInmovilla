@@ -9,7 +9,7 @@
 namespace Creativados\Inmovilla;
 
 
-class PropertiesRemoteGeoValues extends PropertyCall
+class PropertiesRemoteGeoValues extends PropertyCallIterator
 {
     const COUNTRY_SPAIN = 0;
 
