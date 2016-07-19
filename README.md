@@ -44,4 +44,4 @@ composer require {package_name}
 
 ## Authors
 
-- [{author_name}](https://github.com/{github_username})
+- [{VampireJSV}](https://github.com/vampireJSV)
