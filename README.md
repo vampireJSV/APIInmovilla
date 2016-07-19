@@ -1,4 +1,4 @@
-{library_name}
+APIInmovilla
 -----------------
 
 {package_description}
@@ -36,7 +36,7 @@ composer require {package_name}
 
 ## Issues/Features proposals
 
-[Here](https://github.com/{github_repo}/issues) is the issue tracker.
+[Here](https://github.com/vampireJSV/APIInmovilla/issues) is the issue tracker.
 
 ## Lincense
 
@@ -44,4 +44,4 @@ composer require {package_name}
 
 ## Authors
 
-- [{VampireJSV}](https://github.com/vampireJSV)
+- [VampireJSV](https://github.com/vampireJSV)
