@@ -40,8 +40,8 @@ $property = new Inmovilla\Property($server, []);
 //$properties->addWhere("key_loca", 709399);
 //$properties->addWhere("m_uties", 90);
 //$properties->searchImportantProperties();
-var_dump();
-var_dump($properties->getProperty(3917958)->current()->enviroment());
+$property->find(3917958);
+var_dump($property);
 //var_dump($properties->getProperty(232323)->current());
 
 //$server->add_stack_call('tipos_conservacion', 1, 100, "", "");

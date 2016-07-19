@@ -64,7 +64,7 @@ class Server
      * @param string $pass
      * @param int $cache_time_life
      */
-    public function __construct($agency, $pass, $cache_time_life = 60)
+    public function __construct($agency, $pass, $cache_time_life = 60, $cache_dir = self::CACHE_DIR)
     {
         Analog::handler(ChromeLogger::init());
 
@@ -72,7 +72,7 @@ class Server
         $this->pass = $pass;
         $this->cache_time_life = $cache_time_life;
         if ($this->cache_time_life) {
-            $this->cache_dir = self::CACHE_DIR . '/' . date('Y-m-d') . '/' . (int)(((date("G") * self::SECONDS_IN_MINUTE) + (int)date("i")) / $this->cache_time_life);
+            $this->cache_dir = $cache_dir . '/' . date('Y-m-d') . '/' . (int)(((date("G") * self::SECONDS_IN_MINUTE) + (int)date("i")) / $this->cache_time_life);
             if (!file_exists($this->cache_dir)) {
                 mkdir($this->cache_dir);
             }

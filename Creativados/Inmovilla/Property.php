@@ -9,42 +9,19 @@
 namespace Creativados\Inmovilla;
 
 
-class Property extends PropertyCall
+class Property extends PropertyCall implements beautfiersProperty
 {
-    const ENVIRONMENT = [
-        0 => "Árboles",
-        1 => "Hospitales",
-        2 => "Tren",
-        3 => "Metro",
-        4 => "Golf",
-        5 => "Montaña",
-        6 => "Rural",
-        7 => "Costa",
-        8 => "Vallado",
-        9 => "Autobuses",
-        10 => "Centros Comerciales",
-        11 => "Tranvía",
-        12 => "Zonas Infantiles",
-        13 => "Colegios",
-        14 => "Céntrico",
-        15 => "Centro de Salud",
-        16 => "Zona de Paso"
-    ];
-    const BEAUTIFIERS = ["operation" => "keyacci"];
-    const BEAUTIFIERS_VALUES = [
-        'operation' => [
-            1 => "Vender",
-            2 => "Alquilar",
-            3 => "Traspasar",
-            4 => "Vender o Alquilar",
-            5 => "Vender o Traspasar",
-            6 => "Traspasar o Alquilar",
-            7 => "Traspasar, Vender o Alquilar",
-            8 => "Fuera de Mercado",
-            9 => "Temporada Alquiler",
-        ]
-    ];
+
     public $x_entorno = 0;
+
+    /**
+     * @param $feature
+     * @return array
+     */
+    static function beautifiersValues($feature)
+    {
+        return self::BEAUTIFIERS_VALUES[$feature];
+    }
 
     /**
      * Property constructor.
@@ -55,6 +32,7 @@ class Property extends PropertyCall
     {
         parent::__construct($connexion);
         $this->set_values($values);
+
     }
 
     /**
@@ -69,7 +47,9 @@ class Property extends PropertyCall
     private function reset()
     {
         foreach ($this as $key => $value) {
-            unset($this->$key);
+            if ($key != 'connexion') {
+                unset($this->$key);
+            }
         }
     }
 
@@ -150,17 +130,18 @@ class Property extends PropertyCall
         foreach ($values as $key => $value) {
             $this->{$key} = $value;
         }
-    }
-
-    /**
-     * @param $method
-     * @param $params
-     * @return mixed
-     */
-    public function __call($method, $params)
-    {
-        if (in_array($method, array_keys(self::BEAUTIFIERS))) {
-            return $this->beautifier($method);
+        $this->keys = new \stdClass();
+        foreach (self::BEAUTIFIERS as $property => $key) {
+            $output = $this->beautifier($property);
+            if ($output != '') {
+                $this->{
+                $property} = $output;
+                $this->keys->{
+                $key} = $this->{
+                $key};
+                unset($this->{
+                    $key});
+            }
         }
     }
 
@@ -170,6 +151,6 @@ class Property extends PropertyCall
      */
     private function beautifier($operation)
     {
-        return self::BEAUTIFIERS_VALUES[$operation][$this->{self::BEAUTIFIERS[$operation]}];
+        return isset($this->{self::BEAUTIFIERS[$operation]}) ? self::BEAUTIFIERS_VALUES[$operation][$this->{self::BEAUTIFIERS[$operation]}] : "";
     }
 }
