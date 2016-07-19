@@ -12,11 +12,11 @@
     "php": ">=5.4"
   },
   "require-dev": {
-    "analog/analog": "dev-master"
+    "phpunit/phpunit": "*"
   },
   "autoload": {
     "psr-4": {
-      "Creativados\\Inmovilla\\": "Creativados/Inmovilla"
+      "Creativados\\Inmovilla\\": "src"
     }
   }
 }

@@ -8,9 +8,6 @@
 
 namespace Creativados\Inmovilla;
 
-use Analog\Analog;
-use Analog\Handler\ChromeLogger;
-
 class Server
 {
     const CACHE_DIR = 'cache/inmoApi';
@@ -66,8 +63,6 @@ class Server
      */
     public function __construct($agency, $pass, $cache_time_life = 60, $cache_dir = self::CACHE_DIR)
     {
-        Analog::handler(ChromeLogger::init());
-
         $this->agency = $agency;
         $this->pass = $pass;
         $this->cache_time_life = $cache_time_life;
@@ -110,14 +105,11 @@ class Server
         ]);
         if (count($this->stack_call)) {
             $cache_file = md5($string) . '.json';
-            Analog::info($string);
 
             if ($this->cache_time_life && file_exists($this->cache_dir . '/' . $cache_file)) {
                 $output = json_decode(file_get_contents($this->cache_dir . '/' . $cache_file), true);
-                Analog::warning('Load cache');
             } else {
                 $datas = $this->call(rawurlencode($string));
-                Analog::warning('Call number ' . $this->calls_count);
                 eval($datas);
                 foreach ($GLOBALS as $key => $var) {
                     if (!in_array($key, $server_gobals)) {
@@ -131,7 +123,6 @@ class Server
             }
 
             $this->reset_stack_call();
-            Analog::debug($output);
         }
 
         return $output;

@@ -8,7 +8,8 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-use Creativados\Inmovilla;
+use \Creativados\Inmovilla;
+
 
 $server = new Inmovilla\Server(3783, "09823_jlkHG_Mar", 0); //Marblau
 //$server = new Inmovilla\Server(3812, "asdf0923kd__dslkjadsf91jKLKLJfds", 0); //Gijon
