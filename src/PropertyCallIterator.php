@@ -75,4 +75,9 @@ abstract class PropertyCallIterator extends PropertyCall implements \Iterator
     {
         return [$this->key(), $this->current()];
     }
+
+    public function count()
+    {
+        return count($this->var);
+    }
 }

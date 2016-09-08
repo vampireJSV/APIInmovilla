@@ -104,14 +104,29 @@ class Properties extends PropertyCallIterator
         return $string;
     }
 
-    public function searchProperties($offset = 1, $num_elements = 50, $merge = 'AND')
+    public function getNewsProperties($num_elements = 10)
     {
-        return $this->callSearchProperties("paginacion", $offset, $num_elements, $merge, 50);
+        return $this->callSearchProperties("paginacion", 1, $num_elements, 'and', 50, 'fechacambio', 'desc');
     }
 
-    public function searchImportantProperties($offset = 1, $num_elements = 30, $merge = 'AND')
-    {
-        return $this->callSearchProperties("destacados", $offset, $num_elements, $merge, 30);
+    public function searchProperties(
+        $offset = 1,
+        $num_elements = 50,
+        $merge = 'AND',
+        $sort = 'ref',
+        $sortDirection = 'asc'
+    ) {
+        return $this->callSearchProperties("paginacion", $offset, $num_elements, $merge, 50, $sort, $sortDirection);
+    }
+
+    public function searchImportantProperties(
+        $offset = 1,
+        $num_elements = 30,
+        $merge = 'AND',
+        $sort = 'ref',
+        $sortDirection = 'asc'
+    ) {
+        return $this->callSearchProperties("destacados", $offset, $num_elements, $merge, 30, $sort, $sortDirection);
     }
 
     /**
@@ -122,9 +137,16 @@ class Properties extends PropertyCallIterator
      * @param $max_elements
      * @return array
      */
-    private function callSearchProperties($function, $offset, $num_elements, $merge, $max_elements)
-    {
-        if ($num_elements > $max_elements || $num_elements < 1) {
+    private function callSearchProperties(
+        $function,
+        $offset,
+        $num_elements,
+        $merge,
+        $max_elements,
+        $sort,
+        $sortDirection
+    ) {
+        if ($num_elements > $max_elements || $num_elements < 0) {
             $num_elements = $max_elements;
         }
         if ($offset < 1) {
@@ -141,7 +163,7 @@ class Properties extends PropertyCallIterator
         $this->where = [];
         $output = [];
         foreach ($this->getData($function, implode(" " . $merge . " ", $where_string), $offset,
-            $num_elements) as $value) {
+            $num_elements, $sort, $sortDirection) as $value) {
             $output[] = new Property($this->connexion, $value);
         }
 
