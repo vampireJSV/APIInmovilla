@@ -51,6 +51,8 @@ abstract class PropertyCall
                 if ($meta_info['total'] < $max || $max == 0) {
                     $max = $meta_info['total'];
                 }
+            } else {
+                $max = 0;
             }
         } while (($meta_info['posicion'] + $meta_info['elementos'] - 1) < $max);
         return $temp;
