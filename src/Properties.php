@@ -99,7 +99,7 @@ class Properties extends PropertyCallIterator
         if (is_integer($filter)) {
             $string = $key . $operation . $value;
         } else {
-            $string = $key . $operation . "''" . $value . "''";
+            $string = $key . $operation . "'" . $value . "'";
         }
         return $string;
     }
