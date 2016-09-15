@@ -97,6 +97,7 @@ class Property extends PropertyCall implements beautfiersProperty
                 $output[self::FIELDS_NAME[$field]] = $this->{$field};
             }
         }
+        asort($output);
         return $output;
     }
 
