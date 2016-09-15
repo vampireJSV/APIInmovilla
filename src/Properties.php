@@ -68,7 +68,7 @@ class Properties extends PropertyCallIterator
             $filter = self::WHERE_FIELDS[$key];
             switch ($filter) {
                 case 1:
-                    return is_integer($value);
+                    return is_numeric($value);
                     break;
                 case "":
                     return is_string($value);

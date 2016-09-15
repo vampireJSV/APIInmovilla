@@ -265,7 +265,7 @@ interface beautfiersProperty
             2199 => "Amarre",
             2799 => "Apartamento",
             2899 => "Ático",
-            4399 => "Ático Dúplex",
+            4399 => "Ático Dúplex",
             7799 => "Bar",
             7699 => "Barraca",
             2299 => "Bodega",
