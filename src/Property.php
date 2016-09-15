@@ -89,6 +89,17 @@ class Property extends PropertyCall implements beautfiersProperty
         return $this->get();
     }
 
+    public function features()
+    {
+        $output = [];
+        foreach (self::FEATURES as $field) {
+            if (isset($this->{$field})) {
+                $output[self::FIELDS_NAME[$field]] = $this->{$field};
+            }
+        }
+        return $output;
+    }
+
     /**
      * @return bool
      */
