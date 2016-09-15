@@ -153,6 +153,25 @@ class Properties extends PropertyCallIterator
             $offset = 1;
         }
 
+        $output = [];
+        foreach ($this->getData($function, $this->merge_where($merge), $offset,
+            $num_elements, $sort, $sortDirection) as $value) {
+            $output[] = new Property($this->connexion, $value);
+        }
+        $this->var = $output;
+        return $this;
+    }
+
+    public function countElements($merge = 'AND')
+    {
+        return $this->getMeta("paginacion", $this->merge_where($merge), 1, 50, 'ref', 'asc')['total'];
+    }
+
+    /**
+     * @return array
+     */
+    private function merge_where($merge)
+    {
         $where_string = [];
         foreach ($this->where as $operation => $par) {
             foreach ($par as $key => $value) {
@@ -161,13 +180,6 @@ class Properties extends PropertyCallIterator
 
         }
         $this->where = [];
-        $output = [];
-        foreach ($this->getData($function, implode(" " . $merge . " ", $where_string), $offset,
-            $num_elements, $sort, $sortDirection) as $value) {
-            $output[] = new Property($this->connexion, $value);
-        }
-
-        $this->var = $output;
-        return $this;
+        return implode(" " . $merge . " ", $where_string);
     }
 }
