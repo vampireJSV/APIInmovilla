@@ -49,6 +49,9 @@ class Properties extends PropertyCallIterator
         "key_zona" => 1,
         "conservacion" => 1
     ];
+    const WHERE_CHANGES = [
+        "conservacion" => "ofertas.conservacion"
+    ];
     const ACTION_VENTA = 1;
     const ACTION_ALQUILER = 2;
     const ACTION_TRASPASO = 3;
@@ -65,6 +68,7 @@ class Properties extends PropertyCallIterator
     private function validateWhere($key, $value)
     {
         if (in_array($key, array_keys(self::WHERE_FIELDS))) {
+
             $filter = self::WHERE_FIELDS[$key];
             switch ($filter) {
                 case 1:
@@ -84,7 +88,9 @@ class Properties extends PropertyCallIterator
     public function addWhere($key, $value, $operacion = self::OPERATION_EQUAL)
     {
         if ($this->validateWhere($key, $value)) {
-
+            if (in_array($key, array_keys(self::WHERE_CHANGES))) {
+                $key = self::WHERE_CHANGES[$key];
+            }
             $this->where[$operacion][$key] = $value;
         }
     }
