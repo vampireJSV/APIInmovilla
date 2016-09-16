@@ -58,13 +58,17 @@ abstract class PropertyCall
         $where = '',
         $offset = 1,
         $num = self::NUM_ELEMENTS,
-        $sort = 'ref',
-        $sortDirection = 'asc'
+        $sort = '',
+        $sortDirection = ''
     ) {
         list($meta_info, $temp, $max, $num) = $this->initCall($offset, $num);
+        $sort_full = '';
+        if ($sort != '' && $sortDirection != '') {
+            $sort_full = $sort . ' ' . $sortDirection;
+        }
         do {
             $output = $this->connexion->process($function, $meta_info['posicion'] + $meta_info['elementos'],
-                $num, $where, $sort . ' ' . $sortDirection);
+                $num, $where, $sort_full);
             if (isset($output[$function])) {
                 $output = $output[$function];
                 $meta_info = array_shift($output);

@@ -80,4 +80,9 @@ abstract class PropertyCallIterator extends PropertyCall implements \Iterator
     {
         return count($this->var);
     }
+
+    public function getArray()
+    {
+        return $this->var;
+    }
 }

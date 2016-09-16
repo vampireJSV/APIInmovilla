@@ -13,7 +13,7 @@ class PropertiesRemoteGeoValues extends PropertyCallIterator
 {
     const COUNTRY_SPAIN = 0;
 
-    public function getProvinces($pais)
+    public function getProvinces($pais=self::COUNTRY_SPAIN)
     {
         $this->getList("provincias", "codprov", "provincia", "and pais=" . $pais);
         return $this;

@@ -571,7 +571,8 @@ interface beautfiersProperty
         "nbconservacion" => "Estado de conservacion",
         "nborientacion" => 'Orientacion',
         'banyos' => 'Baños',
-        'habdobles' => 'Habitaciones dobles'
+        'habdobles' => 'Habitaciones dobles',
+        'habitaciones' => 'Habitaciones'
     ];
 
     const FEATURES = [
@@ -720,7 +721,8 @@ interface beautfiersProperty
         "vestuarios",
         "video_port",
         "plaza_gara",
-        "parking" .
-        'planta'
+        "parking",
+        'planta',
+        'habitaciones'
     ];
 }

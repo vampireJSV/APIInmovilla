@@ -14,7 +14,7 @@ class Properties extends PropertyCallIterator
     const WHERE_FIELDS = [
         "cod_ofer" => 1,
         "ref" => "",
-        "keyacci" => [1, 2, 3],
+        "keyacci" => [1, 2, 3, 4, 5, 6, 7, 8, 9],
         "precioinmo" => 1,
         "outlet" => 1,
         "precioalq" => 1,
@@ -50,11 +50,19 @@ class Properties extends PropertyCallIterator
         "conservacion" => 1
     ];
     const WHERE_CHANGES = [
-        "conservacion" => "ofertas.conservacion"
+        "conservacion" => "ofertas.conservacion",
+        "key_tipo" => "ofertas.key_tipo",
+        "keyacci" => "ofertas.keyacci"
     ];
     const ACTION_VENTA = 1;
     const ACTION_ALQUILER = 2;
     const ACTION_TRASPASO = 3;
+    const ACTION_VENTA_ALQUILER = 4;
+    const ACTION_VENTA_TRASPASO = 5;
+    const ACTION_ALQUILER_TRASPASO = 6;
+    const ACTION_VENTA_ALQUILER_TRASPASO = 7;
+    const ACTION_FUERA_MERCADO = 8;
+    const ACTION_ALQUILER_TEMPORADA = 9;
     const OPERATION_EQUAL = "=";
     const OPERATION_DISTINC = "!=";
     const OPERATION_GREAT = ">";
@@ -68,29 +76,38 @@ class Properties extends PropertyCallIterator
     private function validateWhere($key, $value)
     {
         if (in_array($key, array_keys(self::WHERE_FIELDS))) {
-
+            $value = explode(',', $value);
             $filter = self::WHERE_FIELDS[$key];
             switch ($filter) {
                 case 1:
-                    return is_numeric($value);
+                    foreach ($value as $item) {
+                        if (!is_numeric($item)) {
+                            return false;
+                        }
+                    }
                     break;
                 case "":
-                    return is_string($value);
+                    foreach ($value as $item) {
+                        if (!is_string($item)) {
+                            return false;
+                        }
+                    }
                     break;
                 default:
-                    return in_array($value, $filter);
+                    foreach ($value as $item) {
+                        if (array_search($item, $filter) === false) {
+                            return false;
+                        }
+                    }
                     break;
             }
         }
-        return false;
+        return true;
     }
 
     public function addWhere($key, $value, $operacion = self::OPERATION_EQUAL)
     {
         if ($this->validateWhere($key, $value)) {
-            if (in_array($key, array_keys(self::WHERE_CHANGES))) {
-                $key = self::WHERE_CHANGES[$key];
-            }
             $this->where[$operacion][$key] = $value;
         }
     }
@@ -99,15 +116,23 @@ class Properties extends PropertyCallIterator
     {
         $string = '';
         $filter = self::WHERE_FIELDS[$key];
+        if (in_array($key, array_keys(self::WHERE_CHANGES))) {
+            $key = self::WHERE_CHANGES[$key];
+        }
         if (is_array($filter)) {
             $filter = array_shift($filter);
         }
-        if (is_integer($filter)) {
-            $string = $key . $operation . $value;
-        } else {
-            $string = $key . $operation . "'" . $value . "'";
+        $value = explode(',', $value);
+        $string = [];
+        foreach ($value as $item) {
+            if (is_integer($filter)) {
+                $string[] = $key . $operation . $item;
+            } else {
+                $string[] = $key . $operation . "'" . $item . "'";
+            }
         }
-        return $string;
+
+        return "(" . implode(' or ', $string) . ")";
     }
 
     public function getNewsProperties($num_elements = 10)
