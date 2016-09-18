@@ -67,7 +67,11 @@ class Server
         $this->pass = $pass;
         $this->cache_time_life = $cache_time_life;
         if ($this->cache_time_life) {
-            $this->cache_dir = $cache_dir . '/' . date('Y-m-d') . '/' . (int)(((date("G") * self::SECONDS_IN_MINUTE) + (int)date("i")) / $this->cache_time_life);
+            $this->cache_dir = $cache_dir . '/' . date('Y-m-d');
+            if (!file_exists($this->cache_dir)) {
+                mkdir($this->cache_dir);
+            }
+            $this->cache_dir = $this->cache_dir . '/' . (int)(((date("G") * self::SECONDS_IN_MINUTE) + (int)date("i")) / $this->cache_time_life);
             if (!file_exists($this->cache_dir)) {
                 mkdir($this->cache_dir);
             }
