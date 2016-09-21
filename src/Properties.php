@@ -70,8 +70,22 @@ class Properties extends PropertyCallIterator
     const OPERATION_GREAT_EQUAL = ">=";
     const OPERATION_lESS_EQUAL = "<=";
     const OPERATION_LIKE = " LIKE ";
+    const MAX_EMENTS = 50;
+    const MAX_EMENTS_IMPORTANTS = 30;
 
     private $where = [];
+    private $maxElements = null;
+
+    /**
+     * Properties constructor.
+     * @param int $maxElements
+     */
+    public function __construct(Server $connexion, $maxElements = self::MAX_EMENTS)
+    {
+        parent::__construct($connexion);
+        $this->maxElements = $maxElements;
+
+    }
 
     private function validateWhere($key, $value)
     {
@@ -137,27 +151,30 @@ class Properties extends PropertyCallIterator
 
     public function getNewsProperties($num_elements = 10)
     {
-        return $this->callSearchProperties("paginacion", 1, $num_elements, 'and', 50, 'fechacambio', 'desc');
+        return $this->callSearchProperties("paginacion", 1, $num_elements, 'and', $this->maxElements, 'fechacambio',
+            'desc');
     }
 
     public function searchProperties(
         $offset = 1,
-        $num_elements = 50,
+        $num_elements = self::MAX_EMENTS,
         $merge = 'AND',
         $sort = 'ref',
         $sortDirection = 'asc'
     ) {
-        return $this->callSearchProperties("paginacion", $offset, $num_elements, $merge, 50, $sort, $sortDirection);
+        return $this->callSearchProperties("paginacion", $offset, $num_elements, $merge, $this->maxElements, $sort,
+            $sortDirection);
     }
 
     public function searchImportantProperties(
         $offset = 1,
-        $num_elements = 30,
+        $num_elements = self::MAX_EMENTS_IMPORTANTS,
         $merge = 'AND',
         $sort = 'ref',
         $sortDirection = 'asc'
     ) {
-        return $this->callSearchProperties("destacados", $offset, $num_elements, $merge, 30, $sort, $sortDirection);
+        return $this->callSearchProperties("destacados", $offset, $num_elements, $merge, $this->maxElements, $sort,
+            $sortDirection);
     }
 
     /**
@@ -195,7 +212,7 @@ class Properties extends PropertyCallIterator
 
     public function countElements($merge = 'AND')
     {
-        return $this->getMeta("paginacion", $this->merge_where($merge), 1, 50, 'ref', 'asc')['total'];
+        return $this->getMeta("paginacion", $this->merge_where($merge), 1, $this->maxElements, 'ref', 'asc')['total'];
     }
 
     /**
