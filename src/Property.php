@@ -163,6 +163,6 @@ class Property extends PropertyCall implements beautfiersProperty
      */
     private function beautifier($operation)
     {
-        return isset($this->{self::BEAUTIFIERS[$operation]}) && $this->{self::BEAUTIFIERS[$operation]} != 0 ? self::BEAUTIFIERS_VALUES[$operation][$this->{self::BEAUTIFIERS[$operation]}] : "";
+        return isset($this->{self::BEAUTIFIERS[$operation]}) && $this->{self::BEAUTIFIERS[$operation]} != 0 ? @self::BEAUTIFIERS_VALUES[$operation][$this->{self::BEAUTIFIERS[$operation]}] : "";
     }
 }
