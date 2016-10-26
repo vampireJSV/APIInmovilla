@@ -114,15 +114,9 @@ class Server
                 $output = json_decode(file_get_contents($this->cache_dir . '/' . $cache_file), true);
             } else {
                 $datas = $this->call(rawurlencode($string));
-                eval($datas);
-                foreach ($GLOBALS as $key => $var) {
-                    if (!in_array($key, $server_gobals)) {
-                        $output[$key] = $GLOBALS[$key];
-                        unset($GLOBALS[$key]);
-                    }
-                }
+                $output = json_decode($datas, true);
                 if ($this->cache_time_life) {
-                    file_put_contents($this->cache_dir . '/' . $cache_file, json_encode($output));
+                    file_put_contents($this->cache_dir . '/' . $cache_file, $datas);
                 }
             }
 
@@ -142,7 +136,7 @@ class Server
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         if (strlen($cadena) > 0) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, "param=" . $cadena);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, "param=" . $cadena . '&json=1');
         }
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookie);
