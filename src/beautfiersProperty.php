@@ -49,6 +49,8 @@ interface beautfiersProperty {
 		"equipacionCocina"    => "electro",
 		"vistas"              => "keyvista",
 		"tipoDescatado"       => "destacado",
+		"plaza_gara"          => "plaza_gara",
+		"parking"             => "parking"
 	];
 	const BEAUTIFIERS_VALUES = [
 		'operation'           => [
