@@ -49,8 +49,8 @@ interface beautfiersProperty {
 		"equipacionCocina"    => "electro",
 		"vistas"              => "keyvista",
 		"tipoDescatado"       => "destacado",
-		"plaza_gara"          => "plaza_gara",
-		"parking"             => "parking"
+		"plaza_garaje"        => "plaza_gara",
+		"plaza_parking"       => "parking"
 	];
 	const BEAUTIFIERS_VALUES = [
 		'operation'           => [
@@ -387,8 +387,8 @@ interface beautfiersProperty {
 			18 => "Despejadas"
 		],
 		"tipoDescatado"       => [ 1 => "Destacado", 2 => "Destacado Estrella", 3 => "Destacado y Estrella" ],
-		"plaza_gara"          => [ 0 => "No disponible", 1 => "Opcional", 2 => "Incluido" ],
-		"parking"             => [ 0 => "No disponible", 1 => "Opcional", 2 => "Incluido" ]
+		"plaza_garaje"        => [ 0 => "No disponible", 1 => "Opcional", 2 => "Incluido" ],
+		"plaza_parking"       => [ 0 => "No disponible", 1 => "Opcional", 2 => "Incluido" ]
 	];
 	const FIELDS_NAME = [
 		"operation"           => "Tipo Operación",
@@ -565,8 +565,8 @@ interface beautfiersProperty {
 		"trifasica"       => "Trifasica",
 		"vestuarios"      => "Vestuarios",
 		"video_port"      => "Video Portero",
-		"plaza_gara"      => "Garaje",
-		"parking"         => "Parking",
+		"plaza_garaje"    => "Garaje",
+		"plaza_parking"   => "Parking",
 		"energiarecibido" => "Cerfiticacion energetica",
 		"energialetra"    => "Calificación Consumo",
 		"emisionesletra"  => "Calificación Emisiones",
@@ -723,8 +723,8 @@ interface beautfiersProperty {
 		"trifasica",
 		"vestuarios",
 		"video_port",
-		"plaza_gara",
-		"parking",
+		"plaza_garaje",
+		"plaza_parking",
 		'planta',
 		'habitaciones'
 	];
