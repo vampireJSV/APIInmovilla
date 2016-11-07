@@ -139,7 +139,7 @@ class Properties extends PropertyCallIterator {
 			if ( is_integer( $filter ) ) {
 				$string[] = $key . $operation . $item;
 			} else {
-				$string[] = $key . $operation . "'" . str_replace( '%', '-caralike-', $item ) . "'";
+				$string[] = $key . $operation . "'" . str_replace( '%', '-caraclike-', $item ) . "'";
 			}
 		}
 
