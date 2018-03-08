@@ -16,6 +16,7 @@ abstract class PropertyCall
 
     /**
      * Type constructor.
+     *
      * @param $connexion
      */
     public function __construct(Server $connexion)
@@ -43,13 +44,14 @@ abstract class PropertyCall
     ) {
         list($meta_info, $temp, $max, $num) = $this->initCall($offset, $num);
         $output = $this->connexion->process($function, $meta_info['posicion'] + $meta_info['elementos'],
-            $num, $where, $sort . ' ' . $sortDirection);
+            $num, $where, $sort.' '.$sortDirection);
         if (isset($output[$function])) {
-            $output = $output[$function];
+            $output    = $output[$function];
             $meta_info = array_shift($output);
         } else {
             $meta_info = [];
         }
+
         return $meta_info;
     }
 
@@ -64,15 +66,15 @@ abstract class PropertyCall
         list($meta_info, $temp, $max, $num) = $this->initCall($offset, $num);
         $sort_full = '';
         if ($sort != '' && $sortDirection != '') {
-            $sort_full = $sort . ' ' . $sortDirection;
+            $sort_full = $sort.' '.$sortDirection;
         }
         do {
             $output = $this->connexion->process($function, $meta_info['posicion'] + $meta_info['elementos'],
                 $num, $where, $sort_full);
-            if (isset($output[$function])) {
-                $output = $output[$function];
+            if (isset($output[$function]) && $output[$function] != '') {
+                $output    = $output[$function];
                 $meta_info = array_shift($output);
-                $temp = array_merge($temp, $output);
+                $temp      = array_merge($temp, $output);
                 if ($meta_info['total'] < $max || $max == 0) {
                     $max = $meta_info['total'];
                 }
@@ -80,23 +82,27 @@ abstract class PropertyCall
                 $max = 0;
             }
         } while (($meta_info['posicion'] + $meta_info['elementos'] - 1) < $max);
+
         return $temp;
     }
 
     /**
      * @param $offset
      * @param $num
+     *
      * @return array
      */
     private function initCall($offset, $num)
     {
         $meta_info = ['posicion' => $offset, 'total' => 0, 'elementos' => 0];
-        $temp = [];
-        $max = $num;
+        $temp      = [];
+        $max       = $num;
         if ($num == 0) {
             $num = self::NUM_ELEMENTS;
+
             return array($meta_info, $temp, $max, $num);
         }
+
         return array($meta_info, $temp, $max, $num);
     }
 }
