@@ -11,7 +11,7 @@ namespace Creativados\Inmovilla;
 class Server
 {
     const CACHE_DIR = 'cache/inmoApi';
-    const URL = "http://84.246.212.9/apiweb/servidor.php";
+    const URL = "https://84.246.212.9/apiweb/servidor.php";
     const USER_AGENT = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3";
     const MAGIC_STRING = 'lostipos';
     const SECONDS_IN_MINUTE = 60;
