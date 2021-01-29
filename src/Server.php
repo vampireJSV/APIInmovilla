@@ -11,7 +11,7 @@ namespace Creativados\Inmovilla;
 class Server
 {
     const CACHE_DIR = 'cache/inmoApi';
-    const URL = "https://84.246.212.9/apiweb/servidor.php";
+    const URL = "https://apiweb.inmovilla.com/apiweb/apiweb.php";
     const USER_AGENT = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3";
     const MAGIC_STRING = 'lostipos';
     const SECONDS_IN_MINUTE = 60;
@@ -136,7 +136,7 @@ class Server
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         if (strlen($cadena) > 0) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, "param=" . $cadena . '&json=1');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, "param=" . $cadena . '&json=1&ia=' .$_SERVER["REMOTE_ADDR"] .'&ib=' .$_SERVER['HTTP_X_FORWARDED_FOR']);
         }
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookie);
